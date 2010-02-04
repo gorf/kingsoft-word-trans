@@ -62,7 +62,7 @@ new_to_old_dict = {u'æ':u'A',u'ɑ':u'B',u'ə':u'E',u'ʃ':u'F',u'ŋ':u'N',
 old_to_new_dict = {}
 for new_char in new_to_old_dict.keys():
     old_to_new_dict[new_to_old_dict[new_char]] = new_char
-#    print old_to_new_dict
+    print old_to_new_dict
 def phonetic_transfer(phonetic,new = True):
     if new:
         trans_dict = new_to_old_dict
