@@ -99,15 +99,21 @@ if __name__ == '__main__':
                         'oldoutputfile'),'w','gbk')
         #    outputfile = codecs.open(u'D:\lhj\gsq\追加.txt','w','gbk')
             line_number = 0
+            atpron = False
             for line in inputfile.readlines():
                 if line[0:1] == '+' :
                     line_number += 1
                     wordline = line[1:len(line)-2]
 
                 elif line[0:1] == '#' :
-                    wordline += line[0:len(line)-2]
+                    if not atpron :
+                        wordline += line[0:len(line)-2]
+                        atpron = True
+                    else:
+                        wordline += line[1:len(line)-2]
 
                 elif line[0:1] == '&' and line[1:]!=None:
+                    atpron = False
                     line = phonetic_transfer(line)
                     wordline += '#'
                     wordline += line[1:len(line)-2]
@@ -135,9 +141,9 @@ if __name__ == '__main__':
             line_number = 0
             for line in inputfile.readlines():
                 word = string.split(line,'#',2)
-                wordline = '+' + word[0] + '\r\n'\
-                    + '#' + word[1] + '\r\n'\
-                    + '&' + phonetic_transfer(word[2][0:-2],False) + '\r\n'\
+                wordline = '+' + word[0].strip() + '\r\n'\
+                    + '#' + word[1].strip() + '\r\n'\
+                    + '&' + phonetic_transfer(word[2][0:-2],False).strip() + '\r\n'\
                     + '$3' + '\r\n'
                 #print wordline
                 try:
