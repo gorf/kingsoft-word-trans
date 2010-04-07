@@ -1,0 +1,275 @@
+<?xml version="1.0" encoding="ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+          "DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>script-kingsoft_word_trans_py</title>
+  <link rel="stylesheet" href="epydoc.css" type="text/css" />
+  <script type="text/javascript" src="epydoc.js"></script>
+</head>
+
+<body bgcolor="white" text="black" link="blue" vlink="#204080"
+      alink="#204080">
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+  <!-- Home link -->
+      <th bgcolor="#70b0f0" class="navbar-select"
+          >&nbsp;&nbsp;&nbsp;Home&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Project homepage -->
+      <th class="navbar" align="right" width="100%">
+        <table border="0" cellpadding="0" cellspacing="0">
+          <tr><th class="navbar" align="center"
+            ><a class="navbar" target="_top" href="http://code.google.com/p/kingsoft-word-trans/">kingsoft-word-trans</a></th>
+          </tr></table></th>
+  </tr>
+</table>
+<table width="100%" cellpadding="0" cellspacing="0">
+  <tr valign="top">
+    <td width="100%">
+      <span class="breadcrumbs">
+        Script&nbsp;kingsoft_word_trans_py
+      </span>
+    </td>
+    <td>
+      <table cellpadding="0" cellspacing="0">
+        <!-- hide/show private -->
+        <tr><td align="right"><span class="options">[<a href="javascript:void(0);" class="privatelink"
+    onclick="toggle_private();">hide&nbsp;private</a>]</span></td></tr>
+        <tr><td align="right"><span class="options"
+            >[<a href="frames.html" target="_top">frames</a
+            >]&nbsp;|&nbsp;<a href="script-kingsoft_word_trans_py-pysrc.html"
+            target="_top">no&nbsp;frames</a>]</span></td></tr>
+      </table>
+    </td>
+  </tr>
+</table>
+<h1 class="epydoc">Source Code for <a href="script-kingsoft_word_trans_py-module.html">Script script-kingsoft_word_trans_py</a></h1>
+<pre class="py-src">
+&#65279;#!/usr/bin/env python
+# -*- coding: UTF-8 -*-
+"""&#37329;&#23665;&#35789;&#38712;&#29983;&#35789;&#26412;&#36716;&#25442;&#31243;&#24207;
+@version: 0.1
+@author: U{Liu Qing}
+"""
+__author__ =  'Liu Qing'
+__version__=  '0.1'
+__nonsense__ = ''
+
+import os, sys, getopt, codecs, string
+
+import ConfigParser
+
+def writeConfig(filename):
+
+        config = ConfigParser.ConfigParser()
+
+        # set app
+
+        section_name = 'app'
+
+        config.add_section( section_name  )
+
+        config.set( section_name, 'newinputfile', 'newinput.txt')
+        config.set( section_name, 'oldoutputfile', 'oldoutput.txt')
+        config.set( section_name, 'oldinputfile', 'oldinput.txt')
+        config.set( section_name, 'newoutputfile', 'newoutput.txt')
+        config.set( section_name, 'test', 'init')
+
+        # write to file
+
+        config.write( open(filename, 'w') )
+
+        
+
+def updateConfig(filename, section, **keyv):
+
+        config = ConfigParser.ConfigParser()
+
+        config.read(filename)
+
+        [config.set(section, key, keyv[key]) for key in keyv if config.has_option(section, key)]
+
+        config.write( open(filename, 'r+') )
+
+def readConfig(filename, section, key):
+
+        config = ConfigParser.ConfigParser()
+
+        config.read(filename)
+        if config.has_option(section, key):
+            return config.get(section, key) 
+        else:
+            print u'&#37197;&#32622;&#25991;&#20214;&#38169;&#35823;&#65292;&#35831;&#21021;&#22987;&#21270;&#25110;&#20462;&#25913;&#37197;&#32622;&#25991;&#20214;&#12290;'.encode('gbk')
+
+config_file_name = 'kingsoft-word-trans.ini'
+
+new_to_old_dict = {u'&#230;':u'A',u'&#593;':u'B',u'&#601;':u'E',u'&#643;':u'F',u'&#331;':u'N',
+    u'&#652;':u'Q',u'&#596;':u'R',u'&#240;':u'T',u'&#658;':u'V',u'&#952;':u'W',u'&#603;':u'Z',
+        u'&#712;':u"5",u'&#716;':u'7',u'&#720;':u':',u'&#618;':u'I',u'&#650;':u'J',u'&#604;':u'\\',u'&#609;':u'g'}
+old_to_new_dict = {}
+for new_char in new_to_old_dict.keys():
+    old_to_new_dict[new_to_old_dict[new_char]] = new_char
+#    print old_to_new_dict
+def phonetic_transfer(phonetic,new = True):
+    if new:
+        trans_dict = new_to_old_dict
+    else:
+        trans_dict = old_to_new_dict
+    for char in trans_dict.keys():
+        if char in phonetic:
+            phonetic = phonetic.replace(char,trans_dict[char])
+    return phonetic
+
+
+if __name__ == '__main__':
+    while True:
+        print u"&#37329;&#23665;&#35789;&#38712;&#29983;&#35789;&#26412;&#36716;&#25442;".encode('gbk')
+        print u"1 &#32769;&#36716;&#26032;".encode('gbk')
+        print u"2 &#26032;&#36716;&#32769;".encode('gbk')
+        print u"9 &#21021;&#22987;&#21270;".encode('gbk')
+        print u"h &#24110;&#21161;".encode('gbk')
+        print u"0 &#36864;&#20986;".encode('gbk')
+
+        choice = raw_input(u'&#35831;&#36873;&#25321;&#65306;'.encode('gbk'))
+        if choice ==  '0':
+            break
+        elif choice ==  '9':
+            writeConfig(config_file_name)
+            updateConfig(config_file_name, 'app', test = 'changed')
+        elif choice == 'h':
+            print u'&#21487;&#20462;&#25913;kingsoft-word-trans.ini&#25991;&#20214;&#36827;&#34892;&#37197;&#32622;&#12290;'.encode('gbk')
+        elif choice ==  '2':
+            inputfile = codecs.open(readConfig(config_file_name, 'app', 'newinputfile'),'r','utf-16')
+            #inputfile = codecs.open(u'newinput.txt','r','utf-16')
+        #    inputfile = codecs.open(u'D:\lhj\gsq\&#25105;&#30340;&#29983;&#35789;&#26412;.txt','r','utf-16')
+            outputfile = codecs.open(readConfig(config_file_name, 'app',
+                        'oldoutputfile'),'w','gbk')
+        #    outputfile = codecs.open(u'D:\lhj\gsq\&#36861;&#21152;.txt','w','gbk')
+            line_number = 0
+            atpron = False
+            for line in inputfile.readlines():
+                if line[0:1] == '+' :
+                    line_number += 1
+                    wordline = line[1:len(line)-2]
+
+                elif line[0:1] == '#' :
+                    if not atpron :
+                        wordline += line[0:len(line)-2]
+                        atpron = True
+                    else:
+                        wordline += line[1:len(line)-2]
+
+                elif line[0:1] == '&' and line[1:]!=None:
+                    atpron = False
+                    line = phonetic_transfer(line)
+                    wordline += '#'
+                    wordline += line[1:len(line)-2]
+
+                elif line[0:1] == '$':
+                    wordline += '\r\n'
+                    #print wordline
+                    try:
+                        outputfile.write(wordline)
+                    except UnicodeEncodeError:
+                        print wordline.encode('utf-8')
+                        print wordline.encode('gb18030')
+
+                else:
+                    wordline += line[0:len(line)-2]
+        
+            print line_number                   
+            outputfile.close
+
+        elif choice ==  '1' :
+            inputfile = codecs.open(readConfig(config_file_name, 'app',
+                        'oldinputfile'),'r','gbk')
+            outputfile = codecs.open(readConfig(config_file_name, 'app',
+                        'newoutputfile'),'w','utf-16')
+            line_number = 0
+            for line in inputfile.readlines():
+                word = string.split(line,'#',2)
+                wordline = '+' + word[0].strip() + '\r\n'\
+                    + '#' + word[1].strip() + '\r\n'\
+                    + '&' + phonetic_transfer(word[2][0:-2],False).strip() + '\r\n'\
+                    + '$3' + '\r\n'
+                #print wordline
+                try:
+                    outputfile.write(wordline)
+                except UnicodeEncodeError:
+                    print wordline.encode('utf-8')
+                    print wordline.encode('gb18030')
+
+            outputfile.close
+<script type="text/javascript">
+<!--
+expandto(location.href);
+// -->
+</script>
+</pre>
+<br />
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+  <!-- Home link -->
+      <th bgcolor="#70b0f0" class="navbar-select"
+          >&nbsp;&nbsp;&nbsp;Home&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Project homepage -->
+      <th class="navbar" align="right" width="100%">
+        <table border="0" cellpadding="0" cellspacing="0">
+          <tr><th class="navbar" align="center"
+            ><a class="navbar" target="_top" href="http://code.google.com/p/kingsoft-word-trans/">kingsoft-word-trans</a></th>
+          </tr></table></th>
+  </tr>
+</table>
+<table border="0" cellpadding="0" cellspacing="0" width="100%%">
+  <tr>
+    <td align="left" class="footer">
+    Generated by Epydoc 3.0.1 on Wed Apr  7 07:56:18 2010
+    </td>
+    <td align="right" class="footer">
+      <a target="mainFrame" href="http://epydoc.sourceforge.net"
+        >http://epydoc.sourceforge.net</a>
+    </td>
+  </tr>
+</table>
+
+<script type="text/javascript">
+  <!--
+  // Private objects are initially displayed (because if
+  // javascript is turned off then we want them to be
+  // visible); but by default, we want to hide them.  So hide
+  // them unless we have a cookie that says to show them.
+  checkCookie();
+  // -->
+</script>
+</body>
+</html>
