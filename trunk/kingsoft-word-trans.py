@@ -1,11 +1,11 @@
 ﻿#!/usr/bin/env python
 # -*- coding: UTF-8 -*-
 """金山词霸生词本转换程序
-@version: $Id$
+@version: 0.1
 @author: U{Liu Qing}
 """
-__author__ =  '刘清'
-__version__=  '1.0'
+__author__ =  'Liu Qing'
+__version__=  '0.1'
 __nonsense__ = ''
 
 import os, sys, getopt, codecs, string
