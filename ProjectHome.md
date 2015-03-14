@@ -1,0 +1,1 @@
+a python script transfer kingsoft dict's new word stock and old stock
